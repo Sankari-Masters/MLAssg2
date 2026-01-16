@@ -82,12 +82,7 @@ ML_Assignment_2/
 │   ├── random_forest.pkl
 │   ├── xgboost.pkl
 │   └── model_results.csv
-│
-├── preprocessing/
-│   └── preprocess.py
-│
-└── notebooks/
-    └── EDA.ipynb
+
 ```
 
 ---
