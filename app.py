@@ -57,6 +57,26 @@ model_metrics = metrics_df[metrics_df["Model"] == model_name]
 st.dataframe(model_metrics, use_container_width=True)
 
 
+st.subheader("Download Sample Validation Dataset")
+
+# Load validation dataset
+try:
+    sample_data = pd.read_csv("data/online_shoppers_intention_validation.csv")
+
+    csv_data = sample_data.to_csv(index=False).encode("utf-8")
+
+    st.download_button(
+        label="Download Sample Validation CSV",
+        data=csv_data,
+        file_name="online_shoppers_validation_sample.csv",
+        mime="text/csv"
+    )
+
+except FileNotFoundError:
+    st.warning("Validation dataset not found in repository.")
+
+
+
 st.subheader("Upload Test Dataset (CSV)")
 
 uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
@@ -116,5 +136,6 @@ if uploaded_file is not None:
 
         st.subheader("Classification Report")
         st.text(classification_report(y_true, y_pred))
+
 
 
