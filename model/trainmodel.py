@@ -54,14 +54,30 @@ X = df.drop('Revenue', axis=1)
 y = df['Revenue']
 
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42, stratify=y
+# First split: Train (70%) and Temp (30%)
+X_train, X_temp, y_train, y_temp = train_test_split(
+    X, y, test_size=0.30, random_state=42, stratify=y
 )
+
+# Second split: Validation (15%) and Test (15%)
+X_val, X_test, y_val, y_test = train_test_split(
+    X_temp, y_temp, test_size=0.50, random_state=42, stratify=y_temp
+)
+
 
 scaler = StandardScaler()
 
 X_train_scaled = scaler.fit_transform(X_train)
+X_val_scaled = scaler.transform(X_val)
 X_test_scaled = scaler.transform(X_test)
+
+# Save validation dataset for Streamlit upload
+val_df = X_val.copy()
+val_df['Revenue'] = y_val
+
+val_df.to_csv("../data/online_shoppers_intention_validation.csv", index=False)
+
+print("Validation dataset saved successfully!")
 
 
 models = {
@@ -110,5 +126,6 @@ results_df = pd.DataFrame(results)
 results_df.to_csv("model_results.csv", index=False)
 
 print(results_df)
+
 
 
